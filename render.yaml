@@ -3,25 +3,24 @@ services:
     type: web
     env: docker
     branch: main
-    plan: starter
-    region: oregon        # choose your region
     repo: https://github.com/msgbyte/tianji
     dockerfilePath: Dockerfile
     autoDeploy: true
+    region: oregon
     envVars:
       - key: NODE_ENV
         value: production
-      - key: ALLOW_REGISTER
-        value: "false"     # disable open registration
-      # Add database settings, JWT secret, etc
       - key: DATABASE_URL
-        fromDatabase:
+        fromService:
           name: tianji-db
+          type: postgres
           property: connectionString
-    # you can add buildCommand/preDeploy/startCommand if needed
+      - key: ALLOW_REGISTER
+        value: "false"  # Or "true" if you want public registration
+      - key: JWT_SECRET
+        generateValue: true  # Or set your own
 
-databases:
   - name: tianji-db
-    engine: postgresql
-    plan: starter      # change as needed
+    type: postgres
+    plan: starter
     region: oregon

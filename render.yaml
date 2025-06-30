@@ -11,16 +11,10 @@ services:
       - key: NODE_ENV
         value: production
       - key: DATABASE_URL
-        fromService:
-          name: tianji-db
-          type: postgres
+        fromDatabase:
+          name: tianji-db  # MUST match the name of the DB you create in Render dashboard
           property: connectionString
       - key: ALLOW_REGISTER
-        value: "false"  # Or "true" if you want public registration
+        value: "false"
       - key: JWT_SECRET
-        generateValue: true  # Or set your own
-
-  - name: tianji-db
-    type: postgres
-    plan: starter
-    region: oregon
+        generateValue: true
